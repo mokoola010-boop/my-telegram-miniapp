@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Профиль</title>
+    <!-- Подключаем Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+        }
+        #profile-info {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+        }
+    </style>
+</head>
+<body>
+    <h1>Профиль</h1>
+    <div id="profile-info">
+        <p><strong>ID:</strong> <span id="user-id">Загрузка...</span></p>
+        <p><strong>Имя пользователя:</strong> <span id="user-username">Загрузка...</span></p>
+    </div>
+
+    <script>
+        // Инициализация WebApp
+        const tg = window.Telegram.WebApp;
+
+        // Расширяем приложение на весь экран (опционально)
+        tg.expand();
+
+        // Получаем данные пользователя
+        const user = tg.initDataUnsafe.user;
+
+        if (user) {
+            document.getElementById('user-id').textContent = user.id;
+            // Проверяем, есть ли username, иначе показываем first_name
+            const displayName = user.username ? `@${user.username}` : (user.first_name || 'Не указано');
+            document.getElementById('user-username').textContent = displayName;
+        } else {
+            document.getElementById('profile-info').innerHTML = '<p>Ошибка загрузки данных пользователя.</p>';
+        }
+    </script>
+</body>
+</html>
